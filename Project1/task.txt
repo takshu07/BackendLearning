@@ -1,0 +1,11 @@
+// restful api with json
+//GET at /users ->list all users
+
+//GET at /users1(dynamic path marameters required)->get user with id 1   (for browser users in html format)
+//GET at /api/users1->grt user with id 1   //making hybrid program (for mobile users in json format)
+
+//POST /user->create user
+
+//patch /user/id->edit the user with id 1
+
+//DELETE /users/1->delete the user with id 1 

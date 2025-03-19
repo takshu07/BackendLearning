@@ -1,0 +1,13 @@
+{
+  "name": "nodejs",
+  "lockfileVersion": 3,
+  "requires": true,
+  "main": "index.js",
+  "packages": {},
+  "scripts": {
+    "start": "node Project1/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
