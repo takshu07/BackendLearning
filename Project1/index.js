@@ -2,8 +2,9 @@ const express=require("express");
 const app=express();
 const Data=require("./MOCK_DATA.json");
 const fs = require("fs");
+const mongoose=require('mongoose')
 const PORT=8000;
-
+let users=[];
 
 
 
@@ -11,6 +12,7 @@ const PORT=8000;
 
 // whatever changes we make in middleware , it will remain in all routes , ex->req.myusername
 app.use(express.urlencoded({extended:false}));
+
 
 app.use((req,res,next)=>{
     console.log("middleware 1");
@@ -36,11 +38,25 @@ app.use((req,res,next)=>{
 //GET at /api/users ->list all users
 
 // to render the page as json for people using mobiles,application.other softwares for rendering 
-app.get("/api/users",(req,res)=>{
+
+app.route("/api/users")
+.get((req,res)=>{
     console.log("i am in get route",req.myusername);
-    
-    return res.json(Data);
-    
+    res.setHeader("X-myname","Tanishk Budhlakoti"); // this is a custom header
+    // it is a good practice to add X-name to name of custom headers 
+     return res.json(Data);
+     
+})
+.post((req,res)=>{
+    const body=req.body;
+    if(!body|| !body.first_name|| !body.email||!body.gender){
+     return res.status(400).json({msg:"all fields are required"})  
+    }
+    users.push({...body, id: users.length +1});
+    fs.writeFile("./MOCK_DATA.json",JSON.stringify(users),(err,data)=>{
+        return res.status(201).json({status :"sucess",id:users.length});
+    })
+   
 })
 
 // to render the page as html for people using browsers (Server side rendering)
@@ -68,10 +84,11 @@ app.get("/users",(req,res)=>{
 app.route("/api/users/:id")
 .get((req,res)=>{
     const id=Number(req.params.id); // id was taken as string from the params
-    const findid=Data.find((finding)=>{
+    const user=Data.find((finding)=>{
        return finding.id===id
     }) 
-    return res.json(findid);
+    if(!user) return res.status(404).json({msg:"user not found"})
+    return res.json(user);
 })
 .patch((req,res)=>{
     //to update a user with id 1
@@ -80,11 +97,7 @@ app.route("/api/users/:id")
     //to delete user with id 900
 })
 
-//POST /user->create user
-app.post("/api/users",(req,res)=>{
-    //To create new user
-    return res.json({status:"pending"})
-})
+
 
 
 

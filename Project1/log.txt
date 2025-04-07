@@ -3,3 +3,4 @@
 ::1: 1743603802110: POST: /api/users
 ::1: 1743603842464: POST: /api/users/1004
 ::1: 1743603922761: POST: /api/users/1004
+::1: 1743605700891: GET: /api/users
